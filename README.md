@@ -6,7 +6,7 @@ It runs over stdio and calls the standard Asana REST API at `https://app.asana.c
 
 ## Requirements
 
-- Node.js 20+
+- Node.js 24+
 - An Asana personal access token
 - Access to the Asana workspaces, projects, and tasks you want to use
 
@@ -59,6 +59,24 @@ Optional:
 
 The server automatically loads `.env` when running locally.
 
+## Test the Asana connection
+
+Copy the example environment file, replace the placeholder with your real PAT, then run the read-only connection test:
+
+```bash
+cp .env.example .env
+# Edit .env and set ASANA_ACCESS_TOKEN
+npm run test:connection
+```
+
+A successful response starts with:
+
+```text
+Asana connection successful.
+```
+
+It then prints the authenticated user and accessible workspaces. This test calls only `GET /users/me`; it does not create or modify Asana data.
+
 ## MCP client configuration
 
 ### Local build
@@ -69,7 +87,7 @@ The server automatically loads `.env` when running locally.
     "asana": {
       "command": "node",
       "args": [
-        "/Users/genkisystem/Desktop/asana-mcp-server/dist/index.js"
+        "/absolute/path/to/asana-mcp-server/dist/index.js"
       ],
       "env": {
         "ASANA_ACCESS_TOKEN": "your_asana_personal_access_token"
@@ -87,7 +105,7 @@ Alternatively, run through npm from the project directory:
     "asana": {
       "command": "npm",
       "args": ["start"],
-      "cwd": "/Users/genkisystem/Desktop/asana-mcp-server",
+      "cwd": "/absolute/path/to/asana-mcp-server",
       "env": {
         "ASANA_ACCESS_TOKEN": "your_asana_personal_access_token"
       }

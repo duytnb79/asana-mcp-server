@@ -10,6 +10,16 @@ import { registerSectionTools } from "./tools/sections.js";
 import { registerStoryTools } from "./tools/stories.js";
 import { registerTaskTools } from "./tools/tasks.js";
 
+process.on("uncaughtException", (error: Error) => {
+  console.error(toReadableError(error));
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (error: unknown) => {
+  console.error(toReadableError(error));
+  process.exit(1);
+});
+
 const config = loadConfig();
 const client = new AsanaClient(config);
 
@@ -22,16 +32,6 @@ registerProjectTools(server, client, config.maxPageSize);
 registerSectionTools(server, client, config.maxPageSize);
 registerStoryTools(server, client);
 registerTaskTools(server, client, config.maxPageSize);
-
-process.on("uncaughtException", (error: Error) => {
-  console.error(toReadableError(error));
-  process.exit(1);
-});
-
-process.on("unhandledRejection", (error: unknown) => {
-  console.error(toReadableError(error));
-  process.exit(1);
-});
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
